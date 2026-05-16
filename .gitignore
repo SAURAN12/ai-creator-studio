@@ -1,0 +1,16 @@
+# Python
+venv/
+__pycache__/
+.env
+
+# Node
+node_modules/
+dist/
+
+# Generated media
+generated_videos/
+generated_audio/
+temp_images/
+
+# Misc
+.DS_Store
