@@ -28,8 +28,9 @@ function App() {
   const [error, setError] = useState("");
   const [status, setStatus] = useState("");
 
-  const API_BASE = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
-
+  const API_BASE =
+  import.meta.env.VITE_API_URL ||
+  "https://ai-creator-studio-production-3875.up.railway.app";
   const apiCall = async (endpoint, payload) => {
     const response = await fetch(`${API_BASE}${endpoint}`, {
       method: "POST",
