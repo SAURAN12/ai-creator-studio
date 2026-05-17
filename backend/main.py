@@ -73,12 +73,12 @@ app.add_middleware(
         "http://localhost:5176",
         "http://127.0.0.1:5176",
         "https://ai-creator-studio-delta.vercel.app",
+        "https://ai-creator-studio-git-main-sauran12s-projects.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 # API keys
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
