@@ -9,6 +9,7 @@ function App() {
   const [style, setStyle] = useState("Hindi Horror");
   const [mood, setMood] = useState("Scary and dramatic");
   const [thumbnail, setThumbnail] = useState("");
+  const [imageStyle, setImageStyle] = useState("Default 3D");
 
   const [genre, setGenre] = useState("Kids Story");
   const [characters, setCharacters] = useState("");
@@ -31,6 +32,21 @@ function App() {
   const API_BASE =
     import.meta.env.VITE_API_URL ||
     "https://ai-creator-studio-production-3875.up.railway.app";
+
+  const imageStyleOptions = [
+    "Default 3D",
+    "Ghibli Inspired",
+    "Pixar Inspired",
+    "Disney Inspired",
+    "Anime",
+    "Realistic",
+    "Cinematic",
+    "Indian Storybook",
+    "Watercolor",
+    "Comic Book",
+    "Clay Animation",
+    "Cyberpunk",
+  ];
 
   const apiCall = async (endpoint, payload) => {
     const response = await fetch(`${API_BASE}${endpoint}`, {
@@ -66,6 +82,7 @@ function App() {
         title,
         style,
         mood,
+        image_style: imageStyle,
       });
 
       setThumbnail(`data:image/png;base64,${data.image_base64}`);
@@ -157,6 +174,7 @@ function App() {
 
       const data = await apiCall("/generate-scene-images", {
         scenes: sceneData.scenes,
+        image_style: imageStyle,
       });
 
       setSceneImages(data.images || []);
@@ -313,6 +331,16 @@ function App() {
       <select value={language} onChange={(e) => setLanguage(e.target.value)}>
         <option>Hindi</option>
         <option>English</option>
+      </select>
+
+      <label>Image Style Mode</label>
+      <select
+        value={imageStyle}
+        onChange={(e) => setImageStyle(e.target.value)}
+      >
+        {imageStyleOptions.map((option) => (
+          <option key={option}>{option}</option>
+        ))}
       </select>
     </>
   );
@@ -525,7 +553,7 @@ function App() {
             onChange={(e) => setTitle(e.target.value)}
           />
 
-          <label>Style</label>
+          <label>Thumbnail Category</label>
           <select value={style} onChange={(e) => setStyle(e.target.value)}>
             <option>Hindi Horror</option>
             <option>Kids Story</option>
@@ -533,6 +561,16 @@ function App() {
             <option>Anime</option>
             <option>Gaming</option>
             <option>Village Story</option>
+          </select>
+
+          <label>Image Style Mode</label>
+          <select
+            value={imageStyle}
+            onChange={(e) => setImageStyle(e.target.value)}
+          >
+            {imageStyleOptions.map((option) => (
+              <option key={option}>{option}</option>
+            ))}
           </select>
 
           <label>Mood</label>
