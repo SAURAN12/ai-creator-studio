@@ -3,6 +3,7 @@ import "./App.css";
 
 function App() {
   const [activeTab, setActiveTab] = useState("story");
+  const [animatedSceneIndex, setAnimatedSceneIndex] = useState(0);
 
   const [title, setTitle] = useState("");
   const [style, setStyle] = useState("Hindi Horror");
@@ -20,7 +21,6 @@ function App() {
   const [sceneImages, setSceneImages] = useState([]);
 
   const [videoPath, setVideoPath] = useState("");
-  const [backendVideoPath, setBackendVideoPath] = useState("");
   const [finalVideoPath, setFinalVideoPath] = useState("");
   const [voiceoverText, setVoiceoverText] = useState("");
 
@@ -29,8 +29,9 @@ function App() {
   const [status, setStatus] = useState("");
 
   const API_BASE =
-  import.meta.env.VITE_API_URL ||
-  "https://ai-creator-studio-production-3875.up.railway.app";
+    import.meta.env.VITE_API_URL ||
+    "https://ai-creator-studio-production-3875.up.railway.app";
+
   const apiCall = async (endpoint, payload) => {
     const response = await fetch(`${API_BASE}${endpoint}`, {
       method: "POST",
@@ -127,9 +128,9 @@ function App() {
       setSceneData(data);
       setSceneImages([]);
       setVideoPath("");
-      setBackendVideoPath("");
       setFinalVideoPath("");
       setVoiceoverText("");
+      setAnimatedSceneIndex(0);
 
       setStatus("Scenes generated successfully");
     } catch (err) {
@@ -151,7 +152,6 @@ function App() {
       setStatus("Generating scene images...");
       setSceneImages([]);
       setVideoPath("");
-      setBackendVideoPath("");
       setFinalVideoPath("");
       setVoiceoverText("");
 
@@ -160,6 +160,7 @@ function App() {
       });
 
       setSceneImages(data.images || []);
+      setAnimatedSceneIndex(0);
       setStatus("Images generated successfully");
     } catch (err) {
       setError(err.message);
@@ -179,7 +180,6 @@ function App() {
       setError("");
       setStatus("Creating video without voiceover...");
       setVideoPath("");
-      setBackendVideoPath("");
       setFinalVideoPath("");
       setVoiceoverText("");
 
@@ -191,8 +191,6 @@ function App() {
       const data = await apiCall("/create-video-from-images", {
         scenes: scenesWithDuration,
       });
-
-      setBackendVideoPath(data.video_path);
 
       const path = data.video_url
         ? `${API_BASE}${data.video_url}`
@@ -261,6 +259,21 @@ function App() {
       setLoading(false);
     }
   };
+
+  const nextAnimatedScene = () => {
+    setAnimatedSceneIndex((prev) =>
+      prev === sceneImages.length - 1 ? 0 : prev + 1
+    );
+  };
+
+  const previousAnimatedScene = () => {
+    setAnimatedSceneIndex((prev) =>
+      prev === 0 ? sceneImages.length - 1 : prev - 1
+    );
+  };
+
+  const animatedImage = sceneImages[animatedSceneIndex];
+  const animatedScene = sceneData?.scenes?.[animatedSceneIndex];
 
   const commonStoryFields = (
     <>
@@ -385,6 +398,37 @@ function App() {
               ? "Creating Synced Video..."
               : "Create Synced Video with Voiceover"}
           </button>
+
+          {sceneImages.length > 0 && animatedImage && (
+            <div className="animated-preview-box">
+              <h2>Animated Scene Preview</h2>
+
+              <div className="animated-scene-frame">
+                <img
+                  className="animated-scene-image"
+                  src={`data:image/png;base64,${animatedImage.image_base64}`}
+                  alt={animatedImage.scene_title}
+                />
+
+                <div className="cinematic-overlay"></div>
+
+                <div className="scene-title-overlay">
+                  Scene {animatedImage.scene_number}: {animatedImage.scene_title}
+                </div>
+
+                <div className="dialogue-overlay">
+                  {animatedScene?.voiceover ||
+                    animatedScene?.dialogue ||
+                    animatedScene?.description}
+                </div>
+              </div>
+
+              <div className="scene-controls">
+                <button onClick={previousAnimatedScene}>Previous Scene</button>
+                <button onClick={nextAnimatedScene}>Next Scene</button>
+              </div>
+            </div>
+          )}
 
           {sceneData?.scenes?.map((scene) => (
             <div key={scene.scene_number} className="story-box">

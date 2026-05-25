@@ -203,3 +203,101 @@ textarea:focus {
     padding: 24px;
   }
 }
+.animated-preview-box {
+  margin-top: 30px;
+  padding: 20px;
+  border-radius: 16px;
+  background: #111827;
+  color: white;
+}
+
+.animated-scene-frame {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  height: 500px;
+  margin: 20px auto;
+  overflow: hidden;
+  border-radius: 18px;
+  background: #000;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+}
+
+.animated-scene-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: cinematicZoom 8s ease-in-out infinite alternate;
+}
+
+.cinematic-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.75),
+    rgba(0, 0, 0, 0.1),
+    rgba(0, 0, 0, 0.35)
+  );
+}
+
+.scene-title-overlay {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  font-size: 24px;
+  font-weight: 700;
+  animation: slideDown 1.2s ease forwards;
+}
+
+.dialogue-overlay {
+  position: absolute;
+  left: 30px;
+  right: 30px;
+  bottom: 30px;
+  padding: 18px 22px;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.65);
+  font-size: 18px;
+  line-height: 1.5;
+  animation: fadeUp 1.5s ease forwards;
+}
+
+.scene-controls {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+@keyframes cinematicZoom {
+  from {
+    transform: scale(1) translateY(0);
+  }
+  to {
+    transform: scale(1.12) translateY(-12px);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(35px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
