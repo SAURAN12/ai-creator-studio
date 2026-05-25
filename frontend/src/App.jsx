@@ -140,6 +140,7 @@ function App() {
         moral,
         duration,
         language,
+        image_style: imageStyle,
       });
 
       setSceneData(data);
