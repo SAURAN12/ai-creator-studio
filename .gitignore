@@ -13,4 +13,5 @@ generated_audio/
 temp_images/
 
 # Misc
-.DS_Store
+.DS_Storebackend/*.mp4
+backend/*.mp4
